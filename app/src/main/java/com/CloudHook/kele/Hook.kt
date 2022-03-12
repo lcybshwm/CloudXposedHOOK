@@ -16,7 +16,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-var xposedinfo = "http://api.tiandivip.cc/hack/xposed/xposedinfo.php"
+var xposedinfo = "https://tiandi.lovetom.top/app/xposedinfo.php"
 
 
 private var config = "错误"
