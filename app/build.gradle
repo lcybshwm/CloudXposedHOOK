@@ -52,6 +52,7 @@ android {
     sourceSets {
         main {
             java {
+                exclude 'com/CloudHook/kele/main.java'
                 exclude 'com/CloudHook/kele/main2.java'
                 exclude 'com/CloudHook/kele/main3.java'
                 exclude 'com/CloudHook/kele/main4.java'
