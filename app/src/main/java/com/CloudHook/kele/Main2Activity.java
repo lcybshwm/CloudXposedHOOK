@@ -3,11 +3,15 @@ package com.CloudHook.kele;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +23,7 @@ import com.tencent.smtt.sdk.WebViewClient;
 public class Main2Activity extends Activity {
     public String modtext;
     public TextView m_textview;
-
+    public Context mContext;
 
     private com.tencent.smtt.sdk.WebView mWebView;
     public static int versionCode = 3;
@@ -30,7 +34,7 @@ public class Main2Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        mContext=Main2Activity.this;
 
 
         setContentView(R.layout.activity_main2);
@@ -52,6 +56,59 @@ public class Main2Activity extends Activity {
 //        edit.putString("xposedvalue", "1");
 //        //提交新值。必须执行，否则前面的操作都无效。
 //        edit.commit();
+
+
+
+
+    }
+    //创建菜单，加载我们之前定义的menu_main.xml布局文件
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    //当OptionsMenu被选中的时候处理具体的响应事件
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_1:
+
+                Hideicon();
+                return true;
+            case R.id.action_2:
+                Toast.makeText(mContext,"Option 2",Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_3:
+                Toast.makeText(mContext,"Option 3",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                //do nothing
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void showLauncherIcon(boolean isShow){
+        PackageManager packageManager = this.getPackageManager();
+        int show = isShow? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        packageManager.setComponentEnabledSetting(getAliseComponentName(), show , PackageManager.DONT_KILL_APP);
+    }
+
+    private ComponentName getAliseComponentName(){
+        return new ComponentName(this, "com.CloudHook.kele.Main2ActivityAlias");
+        // 在AndroidManifest.xml中为MainActivity定义了一个别名为MainActivity-Alias的activity，是默认启动activity、是点击桌面图标后默认程序入口
+    }
+    public void Hideicon(){
+       if (ComponentUtilKt.getEnable(getAliseComponentName(),this)){
+           showLauncherIcon(false);
+           Toast.makeText(this, "已隐藏图标,请在框架中启动应用!", Toast.LENGTH_SHORT).show();
+       }else{
+           showLauncherIcon(true);
+           Toast.makeText(this, "已恢复图标", Toast.LENGTH_SHORT).show();
+       }
+
+
+
+
 
 
 
