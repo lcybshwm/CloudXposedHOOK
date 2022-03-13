@@ -5,11 +5,11 @@ object Constant {
     const val HOOK_ORIGIN = 0
     const val HOOK_JIA_GU = 1
 
-    const val HOOK_RETURN = 0
-    const val HOOK_PARAM = 1
-    const val HOOK_BREAK = 2
-    const val HOOK_STATIC_FIELD = 3
-
-    const val Hook_ACTIVITY=4
-    const val HOOK_FIELD = 5
+    const val HOOK_RETURN = 0  //Hook返回值
+    const val HOOK_PARAM = 1   //Hook方法名参数
+    const val HOOK_BREAK = 2   //中断方法名执行
+    const val HOOK_STATIC_FIELD = 3  //Hook静态变量
+    const val Hook_ACTIVITY=4   //Activity跳转
+    const val HOOK_FIELD = 5    //hook类变量
+    const val HOOK_ActivityFIELD =6 // 退出Activity界面
 }

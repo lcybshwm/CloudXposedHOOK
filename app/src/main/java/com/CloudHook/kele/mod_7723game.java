@@ -8,6 +8,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class mod_7723game {
+  
     public static void startHook(final XC_LoadPackage.LoadPackageParam lppararm) throws Throwable {
 
 

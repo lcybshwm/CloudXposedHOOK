@@ -3,6 +3,7 @@ package com.CloudHook.kele
 import android.app.Application
 import android.content.Context
 import android.util.Base64
+import com.CloudHook.kele.HookStart.Hook_ActivityFIELD
 import com.CloudHook.kele.HookStart.Hook_activity
 import com.CloudHook.myhook.BuildConfig
 import de.robv.android.xposed.XC_MethodHook
@@ -190,7 +191,10 @@ fun startHook(jsonObject: JSONObject, classLoader: ClassLoader) {
             val fieldName = methodJsonObject.getString("fieldName")
             val valueType = methodJsonObject.getString("fieldType")
             hookStaticField(className, classLoader, fieldName, values, valueType)
-        } else {
+        } else if(mode == Constant.HOOK_ActivityFIELD){
+            XposedBridge.log("已获取到跳转函数,当前className:" + className + "当前resultValues:" + values)
+            Hook_ActivityFIELD(classLoader, className, values);
+        }else {
             val methodName = methodJsonObject.getString("methodName")
             val params = methodJsonObject.getString("params")
             hook(className, classLoader, methodName, values, params, mode)

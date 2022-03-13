@@ -2,50 +2,50 @@
 <resources>
     <string-array name="xposed_scope">
         <!--这里是填入需要自动勾选的应用的包名，多个就是多个item-->
-        <item>com.miui.securitycenter</item>
-        <!--        See客户端-->
-        <item>com.caij.see</item>
-        <item>com.wangc.bill</item>
-        <item>com.lijianqiang12.silent</item>
-        <!--        Dj多多-->
-        <item>com.shoujiduoduo.dj</item>
-        <item>com.psyone.brainmusic</item>
-        <item>cn.nineton.sayingwrod</item>
-        <item>com.linroid.zlive</item>
-        <!--        VMOS PRO-->
-        <item>com.vmos.pro</item>
-        <!--        WiFi万能钥匙-->
-        <item>com.snda.wifilocating</item>
-        <!--       葫芦侠-->
-        <item>com.huati</item>
-        <!--        葫芦侠-->
-        <item>com.huluxia.gametools</item>
-        <!--        芥子空间-->
-        <item>com.aigz.cloudgame</item>
-<!--        芥子空间-快猫社区-->
-        <item>com.aigz.cloudgame.cat</item>
-        <!--        铃声多多-->
-        <item>com.shoujiduoduo.ringtone</item>
-        <!--轻颜相机-->
-        <item>com.gorgeous.lite</item>
-        <!--        巧影-->
-        <item>com.nexstreaming.app.kinemasterfree</item>
-        <!--        7723游戏盒-->
-        <item>com.upgadata.up7723</item>
+<!--        <item>com.miui.securitycenter</item>-->
+<!--        &lt;!&ndash;        See客户端&ndash;&gt;-->
+<!--        <item>com.caij.see</item>-->
+<!--        <item>com.wangc.bill</item>-->
+<!--        <item>com.lijianqiang12.silent</item>-->
+<!--        &lt;!&ndash;        Dj多多&ndash;&gt;-->
+<!--        <item>com.shoujiduoduo.dj</item>-->
+<!--        <item>com.psyone.brainmusic</item>-->
+<!--        <item>cn.nineton.sayingwrod</item>-->
+<!--        <item>com.linroid.zlive</item>-->
+<!--        &lt;!&ndash;        VMOS PRO&ndash;&gt;-->
+<!--        <item>com.vmos.pro</item>-->
+<!--        &lt;!&ndash;        WiFi万能钥匙&ndash;&gt;-->
+<!--        <item>com.snda.wifilocating</item>-->
+<!--        &lt;!&ndash;       葫芦侠&ndash;&gt;-->
+<!--        <item>com.huati</item>-->
+<!--        &lt;!&ndash;        葫芦侠&ndash;&gt;-->
+<!--        <item>com.huluxia.gametools</item>-->
+<!--        &lt;!&ndash;        芥子空间&ndash;&gt;-->
+<!--        <item>com.aigz.cloudgame</item>-->
+<!--&lt;!&ndash;        芥子空间-快猫社区&ndash;&gt;-->
+<!--        <item>com.aigz.cloudgame.cat</item>-->
+<!--        &lt;!&ndash;        铃声多多&ndash;&gt;-->
+<!--        <item>com.shoujiduoduo.ringtone</item>-->
+<!--        &lt;!&ndash;轻颜相机&ndash;&gt;-->
+<!--        <item>com.gorgeous.lite</item>-->
+<!--        &lt;!&ndash;        巧影&ndash;&gt;-->
+<!--        <item>com.nexstreaming.app.kinemasterfree</item>-->
+<!--        &lt;!&ndash;        7723游戏盒&ndash;&gt;-->
+<!--        <item>com.upgadata.up7723</item>-->
         <!--        应用包管理组件-->
         <item>com.miui.packageinstaller</item>
-        <!--冰箱-->
-        <item>com.catchingnow.icebox</item>
-<!--米读小说-->
-        <item>com.lechuan.midunovel</item>
-<!--        百度网盘-->
-        <item>com.baidu.netdisk</item>
-<!--        视频转换器-->
-        <item>com.xvideostudio.videocompress</item>
-<!--        ProKnockout智能抠图-->
-<item>com.godimage.knockout.free.cn</item>
-<!--&lt;!&ndash;存储空间隔离&ndash;&gt;-->
-<!--        <item>moe.shizuku.redirectstorage</item>-->
+<!--        &lt;!&ndash;冰箱&ndash;&gt;-->
+<!--        <item>com.catchingnow.icebox</item>-->
+<!--&lt;!&ndash;米读小说&ndash;&gt;-->
+<!--        <item>com.lechuan.midunovel</item>-->
+<!--&lt;!&ndash;        百度网盘&ndash;&gt;-->
+<!--        <item>com.baidu.netdisk</item>-->
+<!--&lt;!&ndash;        视频转换器&ndash;&gt;-->
+<!--        <item>com.xvideostudio.videocompress</item>-->
+<!--&lt;!&ndash;        ProKnockout智能抠图&ndash;&gt;-->
+<!--<item>com.godimage.knockout.free.cn</item>-->
+<!--&lt;!&ndash;&lt;!&ndash;存储空间隔离&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <item>moe.shizuku.redirectstorage</item>&ndash;&gt;-->
 
     </string-array>
 

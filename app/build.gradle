@@ -11,8 +11,8 @@ android {
         applicationId "com.CloudHook.myhook"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 12
-        versionName "1.0.6"
+        versionCode 14
+        versionName "1.0.6beta2"
 
     }
 

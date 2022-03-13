@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.CloudHook.myhook.BuildConfig;
 
@@ -195,6 +196,10 @@ public class HookStart implements IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 super.beforeHookedMethod(param);
                 XposedBridge.log("onCreate运行前...");
+//                Context context= (Context) param.thisObject;
+//                String filepath=context.getPackageManager().getApplicationInfo(context.getApplicationInfo().packageName,0).nativeLibraryDir;
+//               String jiagu360=filepath+"libjiagu.so";
+//             XposedBridge.log("So文件路径"+filepath);
             }
 
             @Override
@@ -213,6 +218,54 @@ public class HookStart implements IXposedHookLoadPackage {
                 } else {
                     XposedBridge.log("activity为空!");
                 }
+
+
+            }
+        });
+
+
+    }
+    public static  void Hook_ActivityFIELD(ClassLoader classLoader, final String curl_activity, final String value) {
+
+        XposedBridge.log("跳转已开始执行...");
+        Class<?> hookclass = XposedHelpers.findClassIfExists(curl_activity, classLoader);
+        if (hookclass == null) {
+            XposedBridge.log("class为空");
+            return;
+        } else {
+            XposedBridge.log("继续执行...");
+        }
+
+        Class<?> hookclass1 = null;
+        try {
+            hookclass1 = classLoader.loadClass(curl_activity);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        XposedBridge.log("当前获取的:" + hookclass.toString());
+        //    hookclass2 = cl.loadClass("com.bat.base.utils.NotAllowedChecker");
+
+
+        XposedHelpers.findAndHookMethod(hookclass1, "onCreate", Bundle.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                super.beforeHookedMethod(param);
+
+                XposedBridge.log("onCreate运行前...");
+
+            }
+
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                Activity activity = (Activity) param.thisObject;
+                XposedBridge.log("onCreate运行后...");
+
+//                Toast.makeText((Application) param.thisObject, "此界面已禁止进入", Toast.LENGTH_SHORT).show();
+
+                activity.finish();
+
+
 
 
             }
