@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
@@ -44,7 +46,36 @@ public class Tools {
         }
         return false;
     }
+public static void Http_proxy_s(final String ip,final String po,final String username,final String userpass){
+    Authenticator.setDefault(new Authenticator() {
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            if (getRequestorType() == RequestorType.PROXY) {
+                String prot = getRequestingProtocol().toLowerCase();
+                String host = System.setProperty("http.proxyHost", ip);
+                String port =   System.setProperty("http.proxyPort", po);
+                System.setProperty("proxySet", "true");
+                String user = System.getProperty(prot + ".proxyUser", username);
+                String password = System.getProperty(prot + ".proxyPassword", userpass);
+                if (getRequestingHost().equalsIgnoreCase(host)) {
+                    if (Integer.parseInt(port) == getRequestingPort()) {
+                        // Seems to be OK.
+                        return new PasswordAuthentication(user, password.toCharArray());
+                    }
+                }
+            }
+            return null;
+        }
+    });
+}
+public static void Http_proxy(final String ip,final String po){
 
+    System.setProperty("http.proxyHost", ip);
+    System.setProperty("http.proxyPort", po);
+    System.setProperty("https.proxyHost", ip);
+    System.setProperty("https.proxyPort", po);
+    System.setProperty("proxySet", "true");
+}
     public static boolean isSystemApplication(Context context, String packageName) {
         PackageManager mPackageManager = context.getPackageManager();
         try {

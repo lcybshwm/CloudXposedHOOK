@@ -4,7 +4,7 @@ package com.CloudHook.kele
 import java.util.regex.Pattern.matches
 
 object Type {
-    private const val INT_PATTERN = """^-?[1-9]\d*$"""
+    private const val INT_PATTERN = """^-?[0-9]\d*$"""
     private const val LONG_PATTERN = """^-?[1-9]\d*[l|L]$"""
     private const val BOOLEAN_PATTERN = """(?i)true|false"""
     private const val STRING_PATTERN = """^-?0?[1-9]\d*[s|S]$"""

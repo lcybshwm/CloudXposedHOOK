@@ -60,7 +60,7 @@ public class HookStart implements IXposedHookLoadPackage {
 
         getnetinfo(lppararm);
 
-//        mod_cckjgl.startHook(lppararm);
+     mod_testip.startHook(lppararm);
         mod_bingxiang.startHook(lppararm);
         mod_wifiwnys.startHook(lppararm);
         mod_huluxia.startHook(lppararm);
@@ -144,21 +144,7 @@ public class HookStart implements IXposedHookLoadPackage {
 //
 //                    }
 //
-//                    XposedHelpers.findAndHookMethod(hookclass, "access$000", hookclass, new XC_MethodHook() {
-//                        @Override
-//                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                            super.beforeHookedMethod(param);
-//
-//                        }
-//
-//                        @Override
-//                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                            super.afterHookedMethod(param);
-//                            XposedBridge.log("无障碍等待已关闭");
-//                            param.setResult(1);
-//
-//                        }
-//                    });
+
 //
 //
 //                }
@@ -169,7 +155,25 @@ public class HookStart implements IXposedHookLoadPackage {
 
 
     }
+public static  void  HTTP_Proxy_Start(Class cl,final String ip, final String port, final String user, final String pass){
 
+    XposedHelpers.findAndHookMethod(cl, "onCreate", Bundle.class, new XC_MethodHook() {
+        @Override
+        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            super.beforeHookedMethod(param);
+//            Tools.Http_proxy_s(ip,port,user,pass);
+            Tools.Http_proxy(ip,port);
+            XposedBridge.log("IP="+ip+"端口="+port);
+        }
+
+        @Override
+        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            super.afterHookedMethod(param);
+
+
+        }
+    });
+}
     public static void Hook_activity(ClassLoader classLoader, final String curl_activity, final String value) {
 
         XposedBridge.log("跳转已开始执行...");

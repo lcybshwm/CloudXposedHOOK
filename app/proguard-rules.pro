@@ -39,14 +39,14 @@
       void onCreate*(...);
   }
   #去除log输出
-  -assumenosideeffects class de.robv.android.xposed.XposedBridge{
-      public static void log(...);
-
-  }
-  -assumenosideeffects class android.util.Log{
-      public static *** v(...);
-      public static *** i(...);
-      public static *** d(...);
-      public static *** w(...);
-      public static *** e(...);
-  }
+#  -assumenosideeffects class de.robv.android.xposed.XposedBridge{
+#      public static void log(...);
+#
+#  }
+#  -assumenosideeffects class android.util.Log{
+#      public static *** v(...);
+#      public static *** i(...);
+#      public static *** d(...);
+#      public static *** w(...);
+#      public static *** e(...);
+#  }

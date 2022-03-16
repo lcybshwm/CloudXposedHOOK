@@ -12,4 +12,7 @@ object Constant {
     const val Hook_ACTIVITY=4   //Activity跳转
     const val HOOK_FIELD = 5    //hook类变量
     const val HOOK_ActivityFIELD =6 // 退出Activity界面
+    const val HOOK_PARAMRET=7 //Hook判断方法名参数并返回结果
+
+    const val HTTP_Proxy=20 //APP添加HTTP代理
 }

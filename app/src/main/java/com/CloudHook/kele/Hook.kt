@@ -43,13 +43,13 @@ fun specialHook(loadPackageParam: XC_LoadPackage.LoadPackageParam?) {
                 var loc_config = app2.getString("xposedinfo", "")
                 if (!loc_config.isNullOrEmpty()) {
                     config = String(Base64.decode(loc_config, Base64.DEFAULT));
-                    XposedBridge.log("报告长官 "+ loadPackageParam!!.packageName+" 配置开始运行Hook!")
+                    XposedBridge.log("报告长官 " + loadPackageParam!!.packageName + " 配置开始运行Hook!")
 
                     readyHook(config, context.classLoader, loadPackageParam!!.packageName)
-                   HookStart.Update_local_configuration(context);
+                    HookStart.Update_local_configuration(context);
                 } else {
 
-                    XposedBridge.log("报告长官 "+ loadPackageParam!!.packageName+" 配置为空!")
+                    XposedBridge.log("报告长官 " + loadPackageParam!!.packageName + " 配置为空!")
 
                 }
 
@@ -72,10 +72,10 @@ fun net_specialHook(loadPackageParam: XC_LoadPackage.LoadPackageParam?) {
 
 
 
-                    if (Tools.isSystemApplication(context, loadPackageParam!!.packageName)) {
-                        XposedBridge.log("包名:" + loadPackageParam!!.packageName + "因为判断是系统应用,停止执行Hook流程")
-                        return;
-                    }
+                if (Tools.isSystemApplication(context, loadPackageParam!!.packageName)) {
+                    XposedBridge.log("包名:" + loadPackageParam!!.packageName + "因为判断是系统应用,停止执行Hook流程")
+                    return;
+                }
 //                    else if (!Tools.isOnForground(context)) {
 //                        XposedBridge.log("包名:" + loadPackageParam.packageName + "因为判断应用未在前台,停止执行")
 //                        return;
@@ -174,7 +174,7 @@ fun startHook(jsonObject: JSONObject, classLoader: ClassLoader) {
 
     val jsonArray = jsonObject.getJSONArray("config")
     val canuse = jsonObject.getBoolean("canUse")
-    if(!canuse){
+    if (!canuse) {
         return;
     }
     for (i in 0 until jsonArray.length()) {
@@ -191,10 +191,27 @@ fun startHook(jsonObject: JSONObject, classLoader: ClassLoader) {
             val fieldName = methodJsonObject.getString("fieldName")
             val valueType = methodJsonObject.getString("fieldType")
             hookStaticField(className, classLoader, fieldName, values, valueType)
-        } else if(mode == Constant.HOOK_ActivityFIELD){
+        } else if (mode == Constant.HOOK_ActivityFIELD) {
             XposedBridge.log("已获取到跳转函数,当前className:" + className + "当前resultValues:" + values)
             Hook_ActivityFIELD(classLoader, className, values);
-        }else {
+        } else if (mode == Constant.HOOK_PARAMRET) {
+            XposedBridge.log("已获取到跳转函数,当前className:" + className + "当前resultValues:" + values)
+            val methodName = methodJsonObject.getString("methodName")
+            val params = methodJsonObject.getString("params")
+            val judge = methodJsonObject.getString("if")
+            hook2(className, classLoader, methodName, values, params, mode, judge)
+        }else if(mode == Constant.HTTP_Proxy){
+            val ip=methodJsonObject.getString("ip")
+            val port=methodJsonObject.getString("port")
+            val user=methodJsonObject.getString("user")
+            val pass=methodJsonObject.getString("pass")
+            HookStart.HTTP_Proxy_Start(classLoader.loadClass(className),ip,port,user,pass);
+//            if(user.isEmpty()){
+//                Tools.Http_proxy(ip,port);
+//                return;
+//            }
+//            Tools.Http_proxy_s(ip,port,user,pass);
+        } else {
             val methodName = methodJsonObject.getString("methodName")
             val params = methodJsonObject.getString("params")
             hook(className, classLoader, methodName, values, params, mode)
@@ -219,10 +236,48 @@ fun hookStaticField(
         "double" -> XposedHelpers.setStaticDoubleField(clazz, fieldName, values.toDouble())
         "boolean" -> XposedHelpers.setStaticBooleanField(clazz, fieldName, values.toBoolean())
         "null" -> XposedHelpers.setStaticObjectField(clazz, fieldName, null)
+        "String" ->XposedHelpers.setStaticObjectField(clazz, fieldName, values.toString())
     }
 
 }
 
+fun hook2(
+    className: String,
+    classLoader: ClassLoader,
+    methodName: String, values: String,
+    params: String, mode: Int, pd: String
+) {
+    val methodParams = params.split(",")
+    val realSize = if (params == "") 0 else methodParams.size
+    val obj = arrayOfNulls<Any>(realSize + 1)
+    for (i in methodParams.indices) {
+        val classType = Type.getClassType(methodParams[i])
+        if (classType == null) {
+            obj[i] = methodParams[i]
+        } else {
+            obj[i] = classType
+        }
+    }
+    when (mode) {
+        Constant.HOOK_PARAMRET -> {
+            obj[realSize] = object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam) {
+                    if (param.args[0].toString().equals(pd)) {
+                        param.result = Type.getDataTypeValue(values)
+
+                    }
+
+                }
+            }
+        }
+
+    }
+    if (XposedHelpers.findClassIfExists(className, classLoader) == null) {
+        //类名+方法名不存在,不进行hook
+        return;
+    }
+    XposedHelpers.findAndHookMethod(className, classLoader, methodName, *obj)
+}
 
 fun hook(
     className: String,
@@ -249,6 +304,7 @@ fun hook(
                 }
             }
         }
+
         Constant.HOOK_BREAK -> {
             obj[realSize] = object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
@@ -273,7 +329,7 @@ fun hook(
             }
         }
     }
-    if(XposedHelpers.findClassIfExists(className,classLoader)==null){
+    if (XposedHelpers.findClassIfExists(className, classLoader) == null) {
         //类名+方法名不存在,不进行hook
         return;
     }
