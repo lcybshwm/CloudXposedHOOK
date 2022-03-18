@@ -61,6 +61,9 @@ fun specialHook(loadPackageParam: XC_LoadPackage.LoadPackageParam?) {
 }
 
 fun net_specialHook(loadPackageParam: XC_LoadPackage.LoadPackageParam?) {
+
+
+
     XposedHelpers.findAndHookMethod(
         Application::class.java,
         "attach",
@@ -155,6 +158,7 @@ fun readyHook(config: String, classLoader: ClassLoader, packageName: String) {
         for (i in 0 until jsonArray.length()) {
             val jsonObject = jsonArray.getJSONObject(i)
             if (jsonObject.getString("packageName") == packageName) {
+
                 startHook(jsonObject, classLoader)
             }
         }
@@ -171,7 +175,7 @@ fun readyHook(config: String, classLoader: ClassLoader, packageName: String) {
 
 
 fun startHook(jsonObject: JSONObject, classLoader: ClassLoader) {
-
+    XposedBridge.log(jsonObject.toString()+ "本地配置:"+"\n")
     val jsonArray = jsonObject.getJSONArray("config")
     val canuse = jsonObject.getBoolean("canUse")
     if (!canuse) {

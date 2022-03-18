@@ -1,16 +1,29 @@
 package com.CloudHook.kele;
 
+import static com.CloudHook.kele.HookKt.readyHook;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.CloudHook.myhook.BuildConfig;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -36,16 +49,73 @@ public class HookStart implements IXposedHookLoadPackage {
     public String cur_packageName = "com.CloudHook.myhook";
     public static String curl_bbh = "";
     public static String curl_info = "";
+    public static String http_GET(String urls){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        //get的方式提交就是url拼接的方式
+        String path = "";
+        try {
+            URL url = new URL(urls);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setRequestMethod("GET");
+            //获得结果码
+            int responseCode = connection.getResponseCode();
+            if(responseCode ==200){
+                //请求成功 获得返回的流
+                InputStream is = connection.getInputStream();
+                StringBuilder sb = new StringBuilder();
+                String line;
 
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                String str = sb.toString();
+                return str;
+
+            }else {
+                //请求失败
+                return null;
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+public static void net_specialHook2(final XC_LoadPackage.LoadPackageParam lppararm){
+    String xposed_info= http_GET(getnetinfo_url);
+    XposedBridge.log("test :"+xposed_info);
+   String config = new String(Base64.decode(xposed_info, Base64.DEFAULT));
+//    XposedBridge.log("报告长官 " + loadPackageParam!!.packageName + " 配置开始运行Hook!")
+
+    readyHook(config, lppararm.classLoader, lppararm.packageName);
+
+}
     public void getnetinfo(final XC_LoadPackage.LoadPackageParam lppararm) {
-
+        if (lppararm != null) {
+            if(lppararm.packageName.contains("com.miui")){
+                return;
+            }
+        }
         XSharedPreferences xsp = new XSharedPreferences(lppararm.packageName, BuildConfig.APPLICATION_ID + "_appinfo");
+        xsp.makeWorldReadable();
         curl_info = xsp.getString("xposedinfo", "");
         XposedBridge.log("当前包名:" + lppararm.packageName + "获取到的配置信息:" + curl_info);
         if (curl_info.equals("")) {
             XposedBridge.log("当前流程: " + lppararm.packageName + " 本地配置为空,先联网请求...");
 
-            HookKt.net_specialHook(lppararm);
+
+//            curl_info = xsp.getString("xposedinfo", xposed_info);
+//            HookKt.specialHook(lppararm);
+            net_specialHook2(lppararm);
+        HookKt.net_specialHook(lppararm);
         } else {
             XposedBridge.log("当前流程: " + lppararm.packageName + " 本地配置存在,先本地缓存...");
             HookKt.specialHook(lppararm);
@@ -60,7 +130,7 @@ public class HookStart implements IXposedHookLoadPackage {
 
         getnetinfo(lppararm);
 
-     mod_testip.startHook(lppararm);
+        mod_tiktok.startHook(lppararm);
         mod_bingxiang.startHook(lppararm);
         mod_wifiwnys.startHook(lppararm);
         mod_huluxia.startHook(lppararm);
